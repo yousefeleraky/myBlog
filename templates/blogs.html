@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>My Blog </h1>
+        <div>
+            <a href="/blogs">Blogs</a>
+            <a href="/create_blog">Create Blog</a>
+            <a href="/login">Logout</a>
+        </div>
+    </div>
+    
+    <div class="body-content">
+        <h2>Blogs</h2>
+        <div>
+            {% for blog in blogs %}
+                <div class="blog-container">
+                    <p>Posted by: {{ blog[4] }}</p>
+                    <h3>{{ blog[1] }}</h3> 
+                    <p>{{ blog[2] }}</p> 
+                    {% if blog[4] == session['username'] %}
+                
+                    <form action="{{ url_for('delete_blog', blog_id=blog[0]) }}" method="POST">
+                        <button type="submit" style="background-color: red;">Delete Blog</button>
+                    </form>
+                    <form  action="{{ url_for('edit_blog', blog_id=blog[0]) }}" method="GET">
+                        <button type="submit">Edit Blog</button>
+                    </form>
+                {% endif %}
+                </div>
+            {% endfor %}
+            {% if current_blog %}
+    <h3>EDIT BLOG</h3>
+    <form method="POST" action="{{ url_for('edit_blog', blog_id=current_blog[0]) }}">
+        <label for="title">title</label>
+        <input type="text" name="title" value="{{ current_blog[1] }}" required>
+        
+        <label for="content">content</label>
+        <textarea name="content" required>{{ current_blog[2] }}</textarea>
+
+        <button type="submit">update</button>
+    </form>
+{% endif %}
+        </div>
+    </div>
+    <script>
+        
+            document.querySelectorAll(".blog-container form[action*='delete_blog']").forEach(form => {
+                form.addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    const blogContainer = this.closest(".blog-container");
+                    
+                    fetch(this.action, { 
+                        method: "POST" 
+                    }).then(response => {
+                        if (response.ok) {
+                            blogContainer.remove();
+                           
+                        }
+                    }).catch(error => console.error("Error:", error));
+                });
+            });
+        </script>
+        
+    
+</body>
+</html>

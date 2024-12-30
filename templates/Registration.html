@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>My Blog </h1>
+        <div>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+    
+    <h1>Create an account</h1>
+
+    <form id="registerForm" action="/Registration" method="post">
+        <label for="username">User Name</label><br>
+        <input type="text" placeholder="Enter Your User Name" name="username" id="username" required>
+        <p id="usernameError" style="color: red; font-size :12px"></p><br>
+
+        <label for="password">Password</label><br>
+        <input type="password" placeholder="Enter Your Password" name="password" id="password" required>
+        <p id="passwordError" style="color: red; font-size :12px"></p><br><br>
+
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <button type="submit">Submit</button>
+        <a href="/login" target="_blank">Already Have Account?</a><br>
+    </form>
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var usernameError = document.getElementById("usernameError");
+            var passwordError = document.getElementById("passwordError");
+            var isValid = true;
+            usernameError.textContent = "";
+            passwordError.textContent = "";
+            var usernameRegex = /^[A-Za-z0-9_]+$/;
+
+            if (!usernameRegex.test(username)) {
+                isValid = false;
+                usernameError.textContent = "Username can only contain letters and numbers.";
+            } else if (username.length < 3 || username.length > 15) {
+                isValid = false;
+                usernameError.textContent = "Username must be between 3 and 15 characters.";
+            }
+
+            if (password.length < 8) {
+                isValid = false;
+                passwordError.textContent = "Password must be at least 8 characters long.";
+            }
+
+            if (isValid) {
+                event.target.submit(); 
+            }
+        });
+    </script>
+</body>
+</html>

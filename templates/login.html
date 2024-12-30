@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>My Blog </h1>
+        <div>
+            <a href="/Registration">Create account</a>
+           
+        </div>
+    </div>
+    
+    <h1>Login to your account</h1>
+    <div class="container">
+
+        <form id="loginForm" action="/login" method="post">
+            <label for="username">User Name</label><br>
+            <input type="text" placeholder="Enter Your username" name="username" required id="email"><br>
+            
+
+            <label for="password">Password</label><br>
+            <input type="password" placeholder="Enter Your Password" name="password" required id="password"><br>
+            {% if error %}
+            <p style="color: red; font-size: 12px">{{ error }}</p>
+        {% endif %}
+            <p><a href="/Registration">Don't Have an Account?</a></p>
+           
+            <button type="submit">Login</button>
+
+        </form>
+</body>
+</html>
